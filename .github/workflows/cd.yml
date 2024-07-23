@@ -41,9 +41,7 @@ jobs:
           key: ${{ secrets.AZURE_VM_PRIVATE_KEY }}
           port: ${{ secrets.AZURE_VM_PORT }}
           script: |
-            docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-api:latest
             docker stop dsound-api || true
             docker rm dsound-api || true
             docker run -d --name dsound-api -p 8080:8080 ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-api:latest
-            docker logout
