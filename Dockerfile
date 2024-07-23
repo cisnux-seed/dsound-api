@@ -4,7 +4,7 @@ ARG SPOTIFY_AUTHORIZE_URI="https://accounts.spotify.com/authorize"
 ARG SPOTIFY_SCOPE="user-read-private user-read-email"
 ARG SPOTIFY_RESPONSE_TYPE="code"
 ARG SPOTIFY_CODE_CHALLENGE_METHOD="S256"
-ARG SPOTIFY_REDIRECT_URI="https://api.dsound.site/authorized"
+ARG SPOTIFY_REDIRECT_URI="https://api.dsound.site/user/authorized"
 WORKDIR /app/
 COPY . .
 
