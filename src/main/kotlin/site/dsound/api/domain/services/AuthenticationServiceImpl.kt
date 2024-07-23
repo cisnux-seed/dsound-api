@@ -35,6 +35,7 @@ class AuthenticationServiceImp(
         val codeChallengeBase64 = Base64.getUrlEncoder().withoutPadding().encodeToString(hashed)
 
         return AuthorizeRedirectUri(
+            codeVerifier = codeVerifier,
             clientId = spotifyConfig.clientId,
             scope = spotifyConfig.scope,
             codeChallenge = codeChallengeBase64,
