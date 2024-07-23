@@ -17,7 +17,7 @@ ENV SPOTIFY_AUTHORIZE_URI="https://accounts.spotify.com/authorize"
 ENV SPOTIFY_SCOPE="user-read-private user-read-email"
 ENV SPOTIFY_RESPONSE_TYPE="code"
 ENV SPOTIFY_CODE_CHALLENGE_METHOD="S256"
-ENV SPOTIFY_REDIRECT_URI="https://api.dsound.site/authorized"
+ENV SPOTIFY_REDIRECT_URI="https://api.dsound.site/user/authorized"
 
 WORKDIR /app/
 
