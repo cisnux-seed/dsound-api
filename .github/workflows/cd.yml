@@ -44,7 +44,7 @@ jobs:
         with:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USERNAME }}
-          key: ${{ steps.decode_key.outputs.key }}
+          key: dsound_key.pem
           port: ${{ secrets.AZURE_VM_PORT }}
           script: |
             docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
