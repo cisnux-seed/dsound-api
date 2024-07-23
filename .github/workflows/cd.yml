@@ -33,18 +33,12 @@ jobs:
       - name: Logout from Docker Hub
         run: docker logout
 
-      - name: Decode SSH key
-        id: decode_key
-        run: |
-          echo "${{ secrets.AZURE_VM_PRIVATE_KEY }}" | base64 --decode > dsound_key.pem
-          chmod 600 dsound_key.pem
-
       - name: SSH to Azure VM and run Docker image
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USERNAME }}
-          key: dsound_key.pem
+          key: ${{ secrets.AZURE_VM_PRIVATE_KEY }}
           port: ${{ secrets.AZURE_VM_PORT }}
           script: |
             docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
