@@ -1,6 +1,7 @@
 package site.dsound.api.application.controllers
 
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -16,7 +17,7 @@ class AuthenticationController(
     private val authenticationService: AuthenticationService,
 ) {
 
-    @GetMapping("/user/spotify/authorize")
+    @GetMapping(path = ["/user/spotify/authorize"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     suspend fun spotifyAuthorize(): WebResponse<AuthorizeRedirectUri> =
         WebResponse(
@@ -27,7 +28,7 @@ class AuthenticationController(
             )
         )
 
-    @GetMapping("/user/spotify/token")
+    @GetMapping(path = ["/user/spotify/token"], produces = [MediaType.APPLICATION_JSON_VALUE])
     suspend fun getSpotifyToken(
         @RequestParam("code") code: String,
         @RequestParam("code_verifier") codeVerifier: String
@@ -39,7 +40,7 @@ class AuthenticationController(
         )
     )
 
-    @GetMapping("/user/spotify/refresh-token")
+    @GetMapping(path = ["/user/spotify/refresh-token"], produces = [MediaType.APPLICATION_JSON_VALUE])
     suspend fun refreshToken(@RequestParam("refresh_token") refreshToken: String): WebResponse<Token> = WebResponse(
         data = authenticationService.refreshToken(refreshToken = refreshToken),
         meta = MetaResponse(

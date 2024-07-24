@@ -16,21 +16,41 @@ import site.dsound.api.infrastructures.dtos.SpotifyTrackResponse
 
 @Repository
 class SpotifySongRepositoryImpl(@Qualifier("spotifyWebClientApi") private val webClient: WebClient) : SongRepository {
-    override suspend fun getSongRecommendations(accessToken: String): SpotifyTrackResponse = withContext(Dispatchers.IO) {
-        try {
-            webClient.get()
-                .uri { uriBuilder ->
-                    uriBuilder.path("/search")
-                        .queryParam("q", KEYWORD)
-                        .queryParam("type", TRACKS)
-                        .build()
-                }
-                .header("Authorization", "Bearer $accessToken")
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, ClientResponse::createException)
-                .awaitBody<SpotifyResponse>().tracks
-        } catch (e: Exception) {
-            throw e
+    override suspend fun getSongRecommendations(accessToken: String): SpotifyTrackResponse =
+        withContext(Dispatchers.IO) {
+            try {
+                webClient.get()
+                    .uri { uriBuilder ->
+                        uriBuilder.path("/search")
+                            .queryParam("q", KEYWORD)
+                            .queryParam("type", TRACKS)
+                            .build()
+                    }
+                    .header("Authorization", "Bearer $accessToken")
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, ClientResponse::createException)
+                    .awaitBody<SpotifyResponse>().tracks
+            } catch (e: Exception) {
+                throw e
+            }
         }
-    }
+
+    override suspend fun findSongs(accessToken: String, query: String): SpotifyTrackResponse =
+        withContext(Dispatchers.IO) {
+            try {
+                webClient.get()
+                    .uri { uriBuilder ->
+                        uriBuilder.path("/search")
+                            .queryParam("q", query)
+                            .queryParam("type", TRACKS)
+                            .build()
+                    }
+                    .header("Authorization", "Bearer $accessToken")
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, ClientResponse::createException)
+                    .awaitBody<SpotifyResponse>().tracks
+            } catch (e: Exception) {
+                throw e
+            }
+        }
 }

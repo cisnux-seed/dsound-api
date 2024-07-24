@@ -17,4 +17,8 @@ class SpotifyProperties {
     lateinit var codeChallengeMethod: String
     @Value("\${SPOTIFY_REDIRECT_URI}")
     lateinit var redirectUri: String
+    @Value("\${SPOTIFY_AUTHENTICATION_URL}")
+    lateinit var spotifyAuthBaseUrl: String
+    @Value("\${SPOTIFY_API_URL}")
+    lateinit var spotifyApiBaseUrl: String
 }

@@ -5,5 +5,5 @@ import java.io.File
 
 interface SongService {
     suspend fun getSongRecommendation(accessToken: String): List<Song>
-    suspend fun detectSong(humming: File): Song
+    suspend fun detectSong(humming: File, accessToken: String): List<Song>
 }

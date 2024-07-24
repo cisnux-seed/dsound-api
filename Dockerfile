@@ -7,6 +7,9 @@ ARG SPOTIFY_CODE_CHALLENGE_METHOD="S256"
 ARG SPOTIFY_REDIRECT_URI="https://api.dsound.site/user/authorized"
 ARG SPOTIFY_AUTHENTICATION_URL="https://accounts.spotify.com/api/token"
 ARG SPOTIFY_API_URL="https://api.spotify.com/v1"
+ARG ACR_ACCESS_KEY="c70f7b38afcd75fb44ab66056b8bf9ce"
+ARG ACR_SECRET_KEY="t1dS0ACBgcgCeA8b6jgx8tApATIr9ZaPXBnK2QOQ"
+ARG ACR_REQ_URL="https://identify-ap-southeast-1.acrcloud.com/v1/identify"
 WORKDIR /app/
 COPY . .
 
@@ -22,6 +25,9 @@ ENV SPOTIFY_CODE_CHALLENGE_METHOD="S256"
 ENV SPOTIFY_REDIRECT_URI="https://api.dsound.site/user/authorized"
 ENV SPOTIFY_AUTHENTICATION_URL="https://accounts.spotify.com/api/token"
 ENV SPOTIFY_API_URL="https://api.spotify.com/v1"
+ENV ACR_ACCESS_KEY="c70f7b38afcd75fb44ab66056b8bf9ce"
+ENV ACR_SECRET_KEY="t1dS0ACBgcgCeA8b6jgx8tApATIr9ZaPXBnK2QOQ"
+ENV ACR_REQ_URL="https://identify-ap-southeast-1.acrcloud.com/v1/identify"
 
 WORKDIR /app/
 
