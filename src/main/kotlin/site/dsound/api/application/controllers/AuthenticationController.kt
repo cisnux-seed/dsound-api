@@ -1,6 +1,5 @@
 package site.dsound.api.application.controllers
 
-import lombok.RequiredArgsConstructor
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -13,7 +12,6 @@ import site.dsound.api.domain.entities.Token
 import site.dsound.api.domain.services.AuthenticationService
 
 @RestController
-@RequiredArgsConstructor
 class AuthenticationController(
     private val authenticationService: AuthenticationService,
 ) {

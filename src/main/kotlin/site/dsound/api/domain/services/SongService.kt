@@ -4,6 +4,6 @@ import site.dsound.api.domain.entities.Song
 import java.io.File
 
 interface SongService {
-    suspend fun getSongRecommendation(): List<Song>
+    suspend fun getSongRecommendation(accessToken: String): List<Song>
     suspend fun detectSong(humming: File): Song
 }

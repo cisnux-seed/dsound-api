@@ -1,11 +1,10 @@
 package site.dsound.api.domain.entities
 
-import java.time.LocalDate
-
 data class Song(
     val id: String,
+    val artistName: String,
     val title: String,
-    val releaseDate: LocalDate,
-    val albumName: String,
-    val score: Float
+    val trackUri: String,
+    val imageUrl: String? = null,
+    val score: Float? = null
 )

@@ -1,7 +1,7 @@
 package site.dsound.api.domain.repositories
 
-import site.dsound.api.domain.entities.Song
+import site.dsound.api.infrastructures.dtos.SpotifyTrackResponse
 
 interface SongRepository {
-    suspend fun findSongs(): List<Song>
+    suspend fun getSongRecommendations(accessToken: String): SpotifyTrackResponse
 }

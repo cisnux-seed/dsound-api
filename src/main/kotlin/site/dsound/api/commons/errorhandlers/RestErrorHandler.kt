@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import site.dsound.api.application.dtos.MetaResponse
 import site.dsound.api.application.dtos.WebResponse
@@ -39,7 +40,25 @@ class RestErrorHandler {
             .body(
                 WebResponse(
                     data = null,
-                    meta = MetaResponse(code = webClientResponseException.statusCode.toString(), message = webClientResponseException.message)
+                    meta = MetaResponse(
+                        code = webClientResponseException.statusCode.value().toString(),
+                        message = webClientResponseException.message
+                    )
+                )
+            )
+    }
+
+    @ExceptionHandler(WebClientRequestException::class)
+    suspend fun webClientRequestException(webClientRequestException: WebClientRequestException): ResponseEntity<WebResponse<String>> {
+        log.warn("Error: ${webClientRequestException.message}")
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(
+                WebResponse(
+                    data = null,
+                    meta = MetaResponse(
+                        code = HttpStatus.CONFLICT.value().toString(),
+                        message = webClientRequestException.message ?: "bad request"
+                    )
                 )
             )
     }

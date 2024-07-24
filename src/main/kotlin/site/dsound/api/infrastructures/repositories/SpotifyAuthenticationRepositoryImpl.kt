@@ -2,13 +2,11 @@ package site.dsound.api.infrastructures.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Repository
 import org.springframework.util.LinkedMultiValueMap
-import org.springframework.web.reactive.function.BodyInserters.fromFormData
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
@@ -22,8 +20,6 @@ class SpotifyAuthenticationRepositoryImpl(
     private val spotifyProperties: SpotifyProperties,
 ) :
     AuthenticationRepository {
-    private val log = LoggerFactory.getLogger(SpotifyAuthenticationRepositoryImpl::class.java)
-
     override suspend fun getToken(code: String, codeVerifier: String): Token = withContext(Dispatchers.IO) {
         try {
             val formData = LinkedMultiValueMap<String, String>().apply {
@@ -37,13 +33,12 @@ class SpotifyAuthenticationRepositoryImpl(
             webClient.post()
                 .uri("https://accounts.spotify.com/api/token")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .bodyValue(fromFormData(formData))
+                .bodyValue(formData)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, ClientResponse::createException)
                 .awaitBody<Token>()
+
         } catch (e: Exception) {
-            // Handle or log the error as needed
-            println("Error occurred: ${e.message}")
             throw e
         }
     }
@@ -58,13 +53,11 @@ class SpotifyAuthenticationRepositoryImpl(
             webClient.post()
                 .uri("https://accounts.spotify.com/api/token")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .bodyValue(fromFormData(formData))
+                .bodyValue(formData)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, ClientResponse::createException)
                 .awaitBody<Token>()
         } catch (e: Exception) {
-            // Handle or log the error as needed
-            println("Error occurred: ${e.message}")
             throw e
         }
     }
