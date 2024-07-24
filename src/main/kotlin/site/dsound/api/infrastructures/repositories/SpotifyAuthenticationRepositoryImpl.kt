@@ -25,37 +25,47 @@ class SpotifyAuthenticationRepositoryImpl(
     private val log = LoggerFactory.getLogger(SpotifyAuthenticationRepositoryImpl::class.java)
 
     override suspend fun getToken(code: String, codeVerifier: String): Token = withContext(Dispatchers.IO) {
-        val formData = LinkedMultiValueMap<String, String>().apply {
-            add("client_id", spotifyProperties.clientId)
-            add("grant_type", "authorization_code")
-            add("code", code)
-            add("redirect_uri", spotifyProperties.redirectUri)
-            add("code_verifier", codeVerifier)
+        try {
+            val formData = LinkedMultiValueMap<String, String>().apply {
+                add("client_id", spotifyProperties.clientId)
+                add("grant_type", "authorization_code")
+                add("code", code)
+                add("redirect_uri", spotifyProperties.redirectUri)
+                add("code_verifier", codeVerifier)
+            }
+
+            webClient.post()
+                .uri("https://accounts.spotify.com/api/token")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .bodyValue(fromFormData(formData))
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, ClientResponse::createException)
+                .awaitBody<Token>()
+        } catch (e: Exception) {
+            // Handle or log the error as needed
+            println("Error occurred: ${e.message}")
+            throw e
         }
-
-        log.info(formData.toString())
-
-        webClient.post()
-            .uri("https://accounts.spotify.com/api/token")
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(fromFormData(formData))
-            .retrieve()
-            .onStatus(HttpStatusCode::isError, ClientResponse::createException)
-            .awaitBody<Token>()
     }
 
     override suspend fun refreshToken(refreshToken: String): Token = withContext(Dispatchers.IO) {
-        val formData = LinkedMultiValueMap<String, String>()
-        formData["client_id"] = spotifyProperties.clientId
-        formData["grant_type"] = "refresh_token"
-        formData["refresh_token"] = refreshToken
+        try {
+            val formData = LinkedMultiValueMap<String, String>()
+            formData["client_id"] = spotifyProperties.clientId
+            formData["grant_type"] = "refresh_token"
+            formData["refresh_token"] = refreshToken
 
-        webClient.post()
-            .uri("https://accounts.spotify.com/api/token")
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .bodyValue(fromFormData(formData))
-            .retrieve()
-            .onStatus(HttpStatusCode::isError, ClientResponse::createException)
-            .awaitBody<Token>()
+            webClient.post()
+                .uri("https://accounts.spotify.com/api/token")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .bodyValue(fromFormData(formData))
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, ClientResponse::createException)
+                .awaitBody<Token>()
+        } catch (e: Exception) {
+            // Handle or log the error as needed
+            println("Error occurred: ${e.message}")
+            throw e
+        }
     }
 }
