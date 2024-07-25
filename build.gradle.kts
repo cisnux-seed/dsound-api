@@ -26,7 +26,6 @@ repositories {
 }
 
 dependencies {
-    implementation(files("libs/commons-codec-1.10.jar"))
     implementation("com.acrcloud.sdks:com.acrcloud.sdks.recognizer:1.0.4")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
