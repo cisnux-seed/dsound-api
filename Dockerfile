@@ -15,7 +15,7 @@ COPY . .
 
 RUN ./gradlew build
 
-FROM openjdk:21-jdk-oracle
+FROM openjdk:21-jdk-oracle as spring
 
 ENV SPOTIFY_CLIENT_ID="5d2537db57414ef8a45a964547fff619"
 ENV SPOTIFY_AUTHORIZE_URI="https://accounts.spotify.com/authorize"
@@ -32,8 +32,19 @@ ENV ACR_REQ_URL="https://identify-ap-southeast-1.acrcloud.com/v1/identify"
 WORKDIR /app/
 
 COPY --from=builder /app/build/libs/api-0.0.1-SNAPSHOT.jar dsound-api.jar
-COPY --from=builder main.py main.py
 
 EXPOSE 8080
 EXPOSE 9090
-ENTRYPOINT ["sh", "-c", "java -jar dsound-api.jar && python3 main.py"]
+ENTRYPOINT ["sh", "-c", "java -jar dsound-api.jar"]
+
+FROM python:3
+
+WORKDIR /app/
+
+COPY --from=builder /app/main.py main.py
+RUN pip install requests --break-system-packages
+RUN pip install Flask --break-system-packages
+
+EXPOSE 8080
+EXPOSE 9090
+ENTRYPOINT ["sh", "-c", "python main.py"]
