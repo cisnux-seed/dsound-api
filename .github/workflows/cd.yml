@@ -43,7 +43,11 @@ jobs:
           script: |
             sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-api:latest
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-local-api:latest
             sudo docker stop dsound-api || true
+            sudo docker stop dsound-local-api || true
             sudo docker rm dsound-api || true
-            sudo docker run -d --name dsound-api -p 8080:8080 -p 9091:9090 ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-api:latest
+            sudo docker rm dsound-local-api || true
+            sudo docker run -d --name dsound-api -p 8080:8080 --network dsound ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-api:latest
+            sudo docker run -d --name dsound-local-api -p 9090:9090 --network dsound ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-local-api:latest
             sudo docker logout
