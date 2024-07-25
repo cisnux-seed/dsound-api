@@ -45,5 +45,5 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-api:latest
             sudo docker stop dsound-api || true
             sudo docker rm dsound-api || true
-            sudo docker run -d --name dsound-api -p 8080:8080 -p 9090:9091 ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-api:latest
+            sudo docker run -d --name dsound-api -p 8080:8080 -p 9091:9090 ${{ secrets.DOCKER_HUB_USERNAME }}/dsound-api:latest
             sudo docker logout
