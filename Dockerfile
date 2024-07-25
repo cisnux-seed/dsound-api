@@ -34,4 +34,5 @@ WORKDIR /app/
 COPY --from=builder /app/build/libs/api-0.0.1-SNAPSHOT.jar dsound-api.jar
 
 EXPOSE 8080
+EXPOSE 9090
 ENTRYPOINT ["sh", "-c", "java -jar dsound-api.jar"]
