@@ -3,6 +3,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("jvm") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
+    kotlin("plugin.serialization") version "1.9.24"
 }
 
 group = "site.dsound"
@@ -25,6 +26,8 @@ repositories {
 }
 
 dependencies {
+    implementation(files("libs/commons-codec-1.10.jar"))
+    implementation("com.acrcloud.sdks:com.acrcloud.sdks.recognizer:1.0.4")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")

@@ -1,8 +1,14 @@
 package site.dsound.api.domain.services
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import site.dsound.api.domain.dtos.AccessToken
 import site.dsound.api.domain.dtos.HummingAudio
 import site.dsound.api.domain.entities.Song
@@ -29,13 +35,11 @@ class SongServiceImpl(
         }
     }
 
-    override suspend fun detectSong(humming: File, accessToken: String): List<Song> =
-        withContext(Dispatchers.Default) {
+    override suspend fun detectSong(humming: FilePart, accessToken: String): List<Song> = withContext(Dispatchers.IO){
             val (validAccessToken) = validationService.validateObject(AccessToken(accessToken))
             val (validHummingAudio) = validationService.validateObject(HummingAudio(humming))
-
             val acrHummings = songDetectionRepository.detectSong(humming = validHummingAudio)
-            acrHummings.map { acrHumming ->
+            acrHummings.mapNotNull { acrHumming ->
                 val trackItemResponse = songRepository.findSongs(accessToken = validAccessToken,
                     query = "${
                         acrHumming.artists.firstOrNull()?.let { "${it.name} " } ?: ""
@@ -55,5 +59,5 @@ class SongServiceImpl(
                 }
             }
         }
-            .filterNotNull()
+
 }

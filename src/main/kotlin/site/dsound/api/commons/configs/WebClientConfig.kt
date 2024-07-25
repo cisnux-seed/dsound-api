@@ -18,6 +18,6 @@ class WebClientConfig(private val spotifyProperties: SpotifyProperties, private 
 
     @Bean("acrClientApi")
     fun acrClientApi(): WebClient {
-        return WebClient.builder().baseUrl(acrProperties.url).build()
+        return WebClient.builder().build()
     }
 }
