@@ -32,7 +32,8 @@ ENV ACR_REQ_URL="https://identify-ap-southeast-1.acrcloud.com/v1/identify"
 WORKDIR /app/
 
 COPY --from=builder /app/build/libs/api-0.0.1-SNAPSHOT.jar dsound-api.jar
+COPY --from=builder main.py main.py
 
 EXPOSE 8080
 EXPOSE 9090
-ENTRYPOINT ["sh", "-c", "java -jar dsound-api.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar dsound-api.jar && python3 main.py"]
